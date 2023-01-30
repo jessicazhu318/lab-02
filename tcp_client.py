@@ -9,10 +9,22 @@ import socket
 
 def main():
     # TODO: Create a socket and connect it to the server at the designated IP and port
+    HOST = "172.20.10.4"
+    PORT = 8080
+    
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        s.connect((HOST, PORT))
+        
     # TODO: Get user input and send it to the server using your TCP socket
+        userInput = bytes(input("Enter a message: "), 'utf-8')
+        s.sendall(userInput)
+    
     # TODO: Receive a response from the server and close the TCP connection
-    pass
-
+        data = s.recv(1024)
+        print(f"Received: {data!r}")
+        
+        s.close()
+        print("Socket closed")
 
 if __name__ == '__main__':
     main()
