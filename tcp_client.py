@@ -9,7 +9,9 @@ import socket
 
 def main():
     # TODO: Create a socket and connect it to the server at the designated IP and port
-    HOST = "172.20.10.4"
+    
+    #HOST = "localhost"			#For testing on VM
+    HOST = "172.20.10.4"		#IP address of my RPi
     PORT = 8080
     
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
@@ -20,7 +22,7 @@ def main():
         s.sendall(userInput)
     
     # TODO: Receive a response from the server and close the TCP connection
-        data = s.recv(1024)
+        data = s.recv(1024).decode()
         print(f"Received: {data!r}")
         
         s.close()
