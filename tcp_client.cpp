@@ -16,13 +16,14 @@ int main(int argc, char const *argv[])
 	char socket_read_buffer[1024];
 	
 	// TODO: Fill out the server ip and port
-	std::string server_ip = "";
-	std::string server_port = "";
+	std::string server_ip = "10.0.2.15";
+	std::string server_port = "8080";
 
 	int opt = 1;
 	int client_fd = -1;
 
 	// TODO: Create a TCP socket()
+	int mySock = socket(AF_INET, SOCK_STREAM, 0);
 
 	// Enable reusing address and port
 	if (setsockopt(client_fd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &opt, sizeof(opt))) { 
@@ -44,10 +45,25 @@ int main(int argc, char const *argv[])
 	getaddrinfo(server_ip.c_str(), server_port.c_str(), &hints, &server_addr);
 
 	// TODO: Connect() to the server (hint: you'll need to use server_addr)
+	if(connect(mySock, (struct sockaddr *) &server_addr, sizeof(server_addr)) < 0); {
+		printf("Error connecting");
+	}
 	// TODO: Retreive user input
+	std::string userInput;
+	std::cout << "Enter a message: ";
+	std::getline(std::cin, userInput);
+	
 	// TODO: Send() the user input to the server
+	send(mySock, userInput.c_str(), userInput.length(), 0);
+	
 	// TODO: Recieve any messages from the server and print it here. Don't forget to make sure the string is null terminated!
+	char response[1024];
+	int numBytes = recv(mySock, response, 1024, 0);
+	response[numBytes] = '\0';
+	std::cout << "Received: " << response << std::endl;
+	
 	// TODO: Close() the socket
-
+	close(mySock);
+	std::cout << "Socket closed." << std::endl;
 	return 0; 
 } 
